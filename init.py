@@ -39,8 +39,8 @@ class Button:
             self.index = 0
 
 def play_intro():
-    introAudio.set_volume(0.1)
-    introAudio.play(-1, 0, 1000)
+    intro.set_volume(0.1)
+    intro.play(-1, 0, 1000)
 
 def render_empty_buttons():
     for i in posX:
@@ -50,7 +50,6 @@ def render_empty_buttons():
 
 def render_smallSpeaker_buttons():
     i = width*0.25-25
-    posY[j]
     smallSpeakerButton1.move((i,posY[0]))
     smallSpeakerOffButton1.move((i,posY[0]))
     screen.blit(smallSpeakerButton1.image, smallSpeakerButton1.rect)
@@ -94,13 +93,16 @@ def button_event(button):
             speakerButton.mute = False
         else:
             switch_speaker(speakerButton, speakerOffButton)
-            introAudio.stop()
+            intro.stop()
             speakerButton.mute = True
-    elif button == smallSpeakerButton:
-        if smallSpeakerButton.mute:
-            switch_speaker(smallSpeakerOffButton, smallSpeakerButton)
+    elif button in speakerButtons:
+        num = speakerButtons.index(button)
+        if button.mute:
+            switch_speaker(button, speakerButtons[num-1])
+            button.mute = False
         else:
-            switch_speaker(smallSpeakerButton, smallSpeakerOffButton)
+            switch_speaker(button, speakerButtons[num+1])
+            button.mute = True
     elif button in gameButtons:
         move_button(button)
             
@@ -140,20 +142,18 @@ cyanButton = Button("res/Cyan_Button.png", None, 2)
 
 gameButtons = [purpleButton, pinkButton, cyanButton]
 utilityButtons = [powerButton, speakerButton, speakerOffButton]
-speakerButtons = [smallSpeakerOffButton, smallSpeakerButton]
+speakerButtons = [smallSpeakerButton1, smallSpeakerOffButton1,
+                  smallSpeakerButton2, smallSpeakerOffButton2,
+                  smallSpeakerButton3, smallSpeakerOffButton3]
 
 buttons = gameButtons + utilityButtons + speakerButtons
 render_buttons()
 
-introAudio = pygame.mixer.Sound(file="res/Intro.wav")
-sample11 = pygame.mixer.Sound(file="res/Sample-1-1.ogg")
-sample12 = pygame.mixer.Sound(file="res/Sample-1-2.ogg")
-sample13 = pygame.mixer.Sound(file="res/Sample-1-3.ogg")
-sample14 = pygame.mixer.Sound(file="res/Sample-1-4.ogg")
-sample21 = pygame.mixer.Sound(file="res/Sample-2-1.ogg")
-sample22 = pygame.mixer.Sound(file="res/Sample-2-2.ogg")
-sample23 = pygame.mixer.Sound(file="res/Sample-2-3.ogg")
-sample24 = pygame.mixer.Sound(file="res/Sample-2-4.ogg")
+intro = pygame.mixer.Sound(file="res/Intro.wav")
+vocal = pygame.mixer.Sound(file="res/Alex-Vocal.wav")
+beat = pygame.mixer.Sound(file="res/Beat-pattern-1.ogg")
+instrument = pygame.mixer.Sound(file="res/Instrument-1.wav")
+
 
 pygame.display.flip()
 
