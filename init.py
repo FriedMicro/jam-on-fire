@@ -105,6 +105,7 @@ screen.fill( (0,0,0) ) #black
 
 posX = [width*0.25, width*0.5, width*0.75]
 posY = [height*0.3+20, height*0.5+20, height*0.7+20]
+
 emptyButton = Button("res/Empty_Button.png")
 powerButton = Button("res/Power_Button.png", (width-32,32))
 speakerOffButton = Button("res/SpeakerOff_Button.png", (32,32))
@@ -114,9 +115,11 @@ smallSpeakerOffButton = Button("res/SmallSpeakerOff_Button.png")
 purpleButton = Button("res/Purple_Button.png", None, 0)
 pinkButton = Button("res/Pink_Button.png", None, 1)
 cyanButton = Button("res/Cyan_Button.png", None, 2)
+
 gameButtons = [purpleButton, pinkButton, cyanButton]
 utilityButtons = [powerButton, speakerButton, speakerOffButton]
 speakerButtons = [smallSpeakerOffButton, smallSpeakerButton]
+
 buttons = gameButtons + utilityButtons + speakerButtons
 render_buttons()
 
