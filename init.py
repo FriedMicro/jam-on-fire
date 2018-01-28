@@ -3,6 +3,7 @@ from pygame.locals import *
 import os
 
 pygame.init()
+pygame.mixer.init()
 pygame.font.init()
 pygame.event.pump()
 
@@ -36,6 +37,10 @@ class Button:
             self.move((posX[0], self.y))
             self.index = 0
 
+def start_audio():
+    introAudio.set_volume(0.3)
+    introAudio.play(-1, 0, 2000)
+
 def render_empty_buttons():
     for i in posX:
         for j in posY:
@@ -65,6 +70,8 @@ def button_event(button):
         move_button(button)
     elif button == speakerButton:
         introAudio.stop()
+        sample.play(0, 0, 0)
+        
 
 def mouse_click(pos):
     for button in buttons:
@@ -94,11 +101,10 @@ gameButtons = [purpleButton, pinkButton, cyanButton]
 buttons = gameButtons + [powerButton, speakerButton]
 render_buttons()
 
-introAudio = pygame.mixer.Sound("res/Intro.wav")
+introAudio = pygame.mixer.Sound(file="res/Intro.wav")
+sample = pygame.mixer.Sound(file="res/Sample.ogg")
 
-pygame.display.update()
+pygame.display.flip()
 
-introAudio.set_volume(0.3)
-introAudio.play(-1, 0, 2000)
-
+start_audio()
 event_loop()
