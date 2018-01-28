@@ -48,8 +48,22 @@ def render_empty_buttons():
             emptyButton.move((i,j))
             screen.blit(emptyButton.image, emptyButton.rect)
 
+def render_smallSpeaker_buttons():
+    i = width*0.25-25
+    posY[j]
+    smallSpeakerButton1.move((i,posY[0]))
+    smallSpeakerOffButton1.move((i,posY[0]))
+    screen.blit(smallSpeakerButton1.image, smallSpeakerButton1.rect)
+    smallSpeakerButton2.move((i,posY[1]))
+    smallSpeakerOffButton2.move((i,posY[1]))
+    screen.blit(smallSpeakerButton2.image, smallSpeakerButton2.rect)
+    smallSpeakerButton3.move((i,posY[2]))
+    smallSpeakerOffButton3.move((i,posY[2]))
+    screen.blit(smallSpeakerButton3.image, smallSpeakerButton3.rect)
+
 def render_buttons():
     render_empty_buttons()
+    render_smallSpeaker_buttons()
     screen.blit(powerButton.image, powerButton.rect)
     screen.blit(speakerButton.image, speakerButton.rect)
     for button in gameButtons:
@@ -73,19 +87,23 @@ def button_event(button):
         pygame.mixer.stop()
         pygame.display.quit()
         sys.exit()
-    elif button in gameButtons:
-        move_button(button)
     elif button == speakerButton:
         if speakerButton.mute:
             switch_speaker(speakerOffButton, speakerButton)
-            sample11.stop()
             play_intro()
             speakerButton.mute = False
         else:
             switch_speaker(speakerButton, speakerOffButton)
             introAudio.stop()
-            sample11.play()
             speakerButton.mute = True
+    elif button == smallSpeakerButton:
+        if smallSpeakerButton.mute:
+            switch_speaker(smallSpeakerOffButton, smallSpeakerButton)
+        else:
+            switch_speaker(smallSpeakerButton, smallSpeakerOffButton)
+    elif button in gameButtons:
+        move_button(button)
+            
 
 def mouse_click(pos):
     for button in buttons:
@@ -103,15 +121,19 @@ size = width, height = 320, 240
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 screen.fill( (0,0,0) ) #black
 
-posX = [width*0.25, width*0.5, width*0.75]
+posX = [width*0.25+25, width*0.5+10, width*0.75-5]
 posY = [height*0.3+20, height*0.5+20, height*0.7+20]
 
 emptyButton = Button("res/Empty_Button.png")
 powerButton = Button("res/Power_Button.png", (width-32,32))
 speakerOffButton = Button("res/SpeakerOff_Button.png", (32,32))
 speakerButton = Button("res/Speaker_Button.png", (32,32))
-smallSpeakerButton = Button("res/SmallSpeaker_Button.png")
-smallSpeakerOffButton = Button("res/SmallSpeakerOff_Button.png")
+smallSpeakerButton1 = Button("res/SmallSpeaker_Button.png")
+smallSpeakerButton2 = Button("res/SmallSpeaker_Button.png")
+smallSpeakerButton3 = Button("res/SmallSpeaker_Button.png")
+smallSpeakerOffButton1 = Button("res/SmallSpeakerOff_Button.png")
+smallSpeakerOffButton2 = Button("res/SmallSpeakerOff_Button.png")
+smallSpeakerOffButton3 = Button("res/SmallSpeakerOff_Button.png")
 purpleButton = Button("res/Purple_Button.png", None, 0)
 pinkButton = Button("res/Pink_Button.png", None, 1)
 cyanButton = Button("res/Cyan_Button.png", None, 2)
