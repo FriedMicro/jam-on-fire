@@ -191,7 +191,7 @@ screen.fill( (0,0,0) ) #black
 posX = [width*0.25+25, width*0.5+10, width*0.75-5]
 posY = [height*0.3+20, height*0.5+20, height*0.7+20]
 
-cwd = os.path.abspath('res/')
+cwd = os.getcwd() + "/res"
 emptyButton = Button(cwd + "/Empty_Button.png")
 powerButton = Button(cwd + "/Power_Button.png", (width-32,32))
 speakerOffButton = Button(cwd + "/SpeakerOff_Button.png", (32,32))
