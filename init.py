@@ -19,6 +19,7 @@ class Button:
             self.y = posY[index]
             self.pos = (self.x, self.y)
         self.rect.center = self.pos
+        self.mute = False
 
     def move(self, pos):
         self.pos = pos
@@ -37,9 +38,9 @@ class Button:
             self.move((posX[0], self.y))
             self.index = 0
 
-def start_audio():
-    introAudio.set_volume(0.3)
-    introAudio.play(-1, 0, 2000)
+def play_intro():
+    introAudio.set_volume(0.1)
+    introAudio.play(-1, 0, 1000)
 
 def render_empty_buttons():
     for i in posX:
@@ -49,7 +50,9 @@ def render_empty_buttons():
 
 def render_buttons():
     render_empty_buttons()
-    for button in buttons:
+    screen.blit(powerButton.image, powerButton.rect)
+    screen.blit(speakerButton.image, speakerButton.rect)
+    for button in gameButtons:
         screen.blit(button.image, button.rect)
 
 def move_button(button):
@@ -61,6 +64,10 @@ def move_button(button):
     screen.blit(button.image, button.rect)
     pygame.display.update(button.rect)
 
+def switch_speaker(current, change):
+    screen.blit(change.image, current.rect)
+    pygame.display.update(current.rect)
+
 def button_event(button):
     if button == powerButton:
         pygame.mixer.stop()
@@ -69,9 +76,16 @@ def button_event(button):
     elif button in gameButtons:
         move_button(button)
     elif button == speakerButton:
-        introAudio.stop()
-        sample.play(0, 0, 0)
-        
+        if speakerButton.mute:
+            switch_speaker(speakerOffButton, speakerButton)
+            sample11.stop()
+            play_intro()
+            speakerButton.mute = False
+        else:
+            switch_speaker(speakerButton, speakerOffButton)
+            introAudio.stop()
+            sample11.play()
+            speakerButton.mute = True
 
 def mouse_click(pos):
     for button in buttons:
@@ -90,21 +104,33 @@ screen = pygame.display.set_mode(size, pygame.NOFRAME)
 screen.fill( (0,0,0) ) #black
 
 posX = [width*0.25, width*0.5, width*0.75]
-posY = [height*0.3, height*0.5, height*0.7]
+posY = [height*0.3+20, height*0.5+20, height*0.7+20]
 emptyButton = Button("res/Empty_Button.png")
 powerButton = Button("res/Power_Button.png", (width-32,32))
-speakerButton = Button("res/Speaker_Button.png", (32, 32))
+speakerOffButton = Button("res/SpeakerOff_Button.png", (32,32))
+speakerButton = Button("res/Speaker_Button.png", (32,32))
+smallSpeakerButton = Button("res/SmallSpeaker_Button.png")
+smallSpeakerOffButton = Button("res/SmallSpeakerOff_Button.png")
 purpleButton = Button("res/Purple_Button.png", None, 0)
 pinkButton = Button("res/Pink_Button.png", None, 1)
 cyanButton = Button("res/Cyan_Button.png", None, 2)
 gameButtons = [purpleButton, pinkButton, cyanButton]
-buttons = gameButtons + [powerButton, speakerButton]
+utilityButtons = [powerButton, speakerButton, speakerOffButton]
+speakerButtons = [smallSpeakerOffButton, smallSpeakerButton]
+buttons = gameButtons + utilityButtons + speakerButtons
 render_buttons()
 
 introAudio = pygame.mixer.Sound(file="res/Intro.wav")
-sample = pygame.mixer.Sound(file="res/Sample.ogg")
+sample11 = pygame.mixer.Sound(file="res/Sample-1-1.ogg")
+sample12 = pygame.mixer.Sound(file="res/Sample-1-2.ogg")
+sample13 = pygame.mixer.Sound(file="res/Sample-1-3.ogg")
+sample14 = pygame.mixer.Sound(file="res/Sample-1-4.ogg")
+sample21 = pygame.mixer.Sound(file="res/Sample-2-1.ogg")
+sample22 = pygame.mixer.Sound(file="res/Sample-2-2.ogg")
+sample23 = pygame.mixer.Sound(file="res/Sample-2-3.ogg")
+sample24 = pygame.mixer.Sound(file="res/Sample-2-4.ogg")
 
 pygame.display.flip()
 
-start_audio()
+play_intro()
 event_loop()
