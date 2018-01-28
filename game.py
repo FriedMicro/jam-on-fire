@@ -1,11 +1,18 @@
-import sys, pygame
+import os, sys, pygame, random
 from pygame.locals import *
-import os
 
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 pygame.event.pump()
+
+
+first = random.randint(0,2)
+mid = (1 if (first == 0) else 0)
+if (mid == 0):
+    last = (2 if (first == 1) else 1)
+else:
+    last = (2 if (mid == 1) else 1)
 
 class Button:
 
@@ -39,8 +46,8 @@ class Button:
             self.index = 0
 
 def play_intro():
-    intro.set_volume(0.1)
-    intro.play(-1, 0, 1000)
+    intro.set_volume(0.05)
+    return intro.play(-1, 0, 800)
 
 def render_empty_buttons():
     for i in posX:
@@ -73,6 +80,7 @@ def switch_speaker(current, change):
     pygame.display.update(current.rect)
 
 def play_original():
+    channel.pause()
     vocal1.play()
     beat1.play()
     instrument1.play()
@@ -81,8 +89,10 @@ def stop_original():
     vocal1.stop()
     beat1.stop()
     instrument1.stop()
+    channel.unpause()
 
 def play_combined(pos1, pos2, pos3):
+    channel.pause()
     vocals[pos1].play()
     beats[pos2].play()
     instruments[pos3].play()
@@ -91,8 +101,10 @@ def stop_combined(pos1, pos2, pos3):
     vocals[pos1].stop()
     beats[pos2].stop()
     instruments[pos3].stop()
+    channel.unpause()
 
 def play_piece(index, pos):
+    channel.pause()
     if index == 0:
         vocals[pos].play()
     elif index == 2:
@@ -107,67 +119,72 @@ def stop_piece(index, pos):
         beats[pos].stop()
     elif index == 4:
         instruments[pos].stop()
+    channel.unpause()
 
 def get_button_pos(index):
     if index == 0:
         if purpleButton.rect.collidepoint( (posX[0], posY[0]) ):
-            return 0
+            return first
         elif purpleButton.rect.collidepoint( (posX[1], posY[0]) ):
-            return 1
+            return mid
         elif purpleButton.rect.collidepoint( (posX[2], posY[0]) ):
-            return 2
+            return last
     elif index == 2:
         if pinkButton.rect.collidepoint( (posX[0], posY[1]) ):
-            return 0
+            return last
         elif pinkButton.rect.collidepoint( (posX[1], posY[1]) ):
-            return 1
+            return mid
         elif pinkButton.rect.collidepoint( (posX[2], posY[1]) ):
-            return 2
+            return first
     elif index == 4:
         if cyanButton.rect.collidepoint( (posX[0], posY[2]) ):
-            return 0
+            return mid
         elif cyanButton.rect.collidepoint( (posX[1], posY[2]) ):
-            return 1
+            return first
         elif cyanButton.rect.collidepoint( (posX[2], posY[2]) ):
-            return 2
+            return last
 
 def button_event(button):
     if button == powerButton:
         pygame.mixer.stop()
         pygame.display.quit()
         sys.exit()
+
     elif button == speakerButton:
-        if button.mute: #stop playing
+        if button.mute:
             switch_speaker(speakerOffButton, button)
             stop_original()
             button.mute = False
-        else: #start playing
+        else:
             switch_speaker(button, speakerOffButton)
             play_original()
             button.mute = True
+
     elif button == finalSpeakerButton:
         button1 = get_button_pos(0)
         button2 = get_button_pos(2)
         button3 = get_button_pos(4)
-        if button.mute: #stop playing
+        if button.mute:
             switch_speaker(finalSpeakerOffButton, button)
             stop_combined(button1, button2, button3)
             button.mute = False
-        else: #start playing
+        else:
             switch_speaker(button, finalSpeakerOffButton)
             play_combined(button1, button2, button3)
             button.mute = True
+
     elif button in speakerButtons:
         index = speakerButtons.index(button)
         pos = get_button_pos(index)
-        if button.mute: #stop playing
+        if button.mute:
             switch_speaker(button, button)
             stop_piece(index, pos)
             button.mute = False
-        else: #start playing
+        else:
             switch_speaker(button, speakerButtons[index+1])
             play_piece(index, pos)
             button.mute = True
+
     elif button in gameButtons:
         move_button(button)
 
@@ -235,5 +252,5 @@ instruments = [instrument1, instrument2, instrument3]
 
 pygame.display.flip()
 
-#play_intro()
+channel = play_intro()
 event_loop()
