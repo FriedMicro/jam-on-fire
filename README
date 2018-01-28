@@ -1,3 +1,17 @@
 This application is written using the pygame library which can be installed through pip.
 
 To run it on Windows double-click the exe file provided. For mac user cd into the directory and type ./game.
+
+To play:
+  - Click on the green speaker in the top left-hand corner to hear the audio you want to match.
+    - This audio is composed of three different tracks, corresponding with the three different buttons on your screen.
+    - To stop the audio coming from any speaker, click the speaker again.
+  - To hear the sample you currently have selected, click the multi-colored speaker on the right-hand side.
+  - To hear a specific track, click the mini-speaker of the corresponding color.
+  - Each button will move to the right one position if clicked. This alters the track in some way. Try to match the goal audio.
+  - When you feel that you've matched the goal audio, congratulations! Click the power button and pat yourself on the back.
+
+Concept: Tanner Stanley
+Vocals: Alex Watson
+Music and mixing: Lucas Smith
+Code and art: Allie Curtis
