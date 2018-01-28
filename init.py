@@ -48,23 +48,13 @@ def render_empty_buttons():
             emptyButton.move((i,j))
             screen.blit(emptyButton.image, emptyButton.rect)
 
-def render_smallSpeaker_buttons():
-    i = width*0.25-25
-    smallSpeakerButton1.move((i,posY[0]))
-    smallSpeakerOffButton1.move((i,posY[0]))
-    screen.blit(smallSpeakerButton1.image, smallSpeakerButton1.rect)
-    smallSpeakerButton2.move((i,posY[1]))
-    smallSpeakerOffButton2.move((i,posY[1]))
-    screen.blit(smallSpeakerButton2.image, smallSpeakerButton2.rect)
-    smallSpeakerButton3.move((i,posY[2]))
-    smallSpeakerOffButton3.move((i,posY[2]))
-    screen.blit(smallSpeakerButton3.image, smallSpeakerButton3.rect)
-
 def render_buttons():
     render_empty_buttons()
-    render_smallSpeaker_buttons()
     screen.blit(powerButton.image, powerButton.rect)
     screen.blit(speakerButton.image, speakerButton.rect)
+    screen.blit(smallSpeakerButton1.image, smallSpeakerButton1.rect)
+    screen.blit(smallSpeakerButton2.image, smallSpeakerButton2.rect)
+    screen.blit(smallSpeakerButton3.image, smallSpeakerButton3.rect)
     for button in gameButtons:
         screen.blit(button.image, button.rect)
 
@@ -98,7 +88,7 @@ def button_event(button):
     elif button in speakerButtons:
         num = speakerButtons.index(button)
         if button.mute:
-            switch_speaker(button, speakerButtons[num-1])
+            switch_speaker(button, button)
             button.mute = False
         else:
             switch_speaker(button, speakerButtons[num+1])
@@ -130,12 +120,12 @@ emptyButton = Button("res/Empty_Button.png")
 powerButton = Button("res/Power_Button.png", (width-32,32))
 speakerOffButton = Button("res/SpeakerOff_Button.png", (32,32))
 speakerButton = Button("res/Speaker_Button.png", (32,32))
-smallSpeakerButton1 = Button("res/SmallSpeaker_Button.png")
-smallSpeakerButton2 = Button("res/SmallSpeaker_Button.png")
-smallSpeakerButton3 = Button("res/SmallSpeaker_Button.png")
 smallSpeakerOffButton1 = Button("res/SmallSpeakerOff_Button.png")
 smallSpeakerOffButton2 = Button("res/SmallSpeakerOff_Button.png")
 smallSpeakerOffButton3 = Button("res/SmallSpeakerOff_Button.png")
+smallSpeakerButton1 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[0]))
+smallSpeakerButton2 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[1]))
+smallSpeakerButton3 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[2]))
 purpleButton = Button("res/Purple_Button.png", None, 0)
 pinkButton = Button("res/Pink_Button.png", None, 1)
 cyanButton = Button("res/Cyan_Button.png", None, 2)
@@ -150,9 +140,15 @@ buttons = gameButtons + utilityButtons + speakerButtons
 render_buttons()
 
 intro = pygame.mixer.Sound(file="res/Intro.wav")
-vocal = pygame.mixer.Sound(file="res/Alex-Vocal.wav")
-beat = pygame.mixer.Sound(file="res/Beat-pattern-1.ogg")
-instrument = pygame.mixer.Sound(file="res/Instrument-1.wav")
+vocal1 = pygame.mixer.Sound(file="res/Alex-Vocal-1.wav")
+vocal2 = pygame.mixer.Sound(file="res/Alex-Vocal-2.wav")
+vocal3 = pygame.mixer.Sound(file="res/Alex-Vocal-3.wav")
+beat1 = pygame.mixer.Sound(file="res/Beat-loop-1.ogg")
+beat2 = pygame.mixer.Sound(file="res/Beat-loop-2.wav")
+beat2 = pygame.mixer.Sound(file="res/Beat-loop-3.wav")
+instrument1 = pygame.mixer.Sound(file="res/Instrument-1.ogg")
+instrument2 = pygame.mixer.Sound(file="res/Instrument-2.wav")
+instrument3 = pygame.mixer.Sound(file="res/Instrument-3.wav")
 
 
 pygame.display.flip()
