@@ -71,27 +71,32 @@ def switch_speaker(current, change):
     screen.blit(change.image, current.rect)
     pygame.display.update(current.rect)
 
+def play_original():
+    vocal1.play()
+
 def button_event(button):
     if button == powerButton:
         pygame.mixer.stop()
         pygame.display.quit()
         sys.exit()
     elif button == speakerButton:
-        if speakerButton.mute:
+        if speakerButton.mute: #start playing
             switch_speaker(speakerOffButton, speakerButton)
-            play_intro()
+            
             speakerButton.mute = False
-        else:
+        else: #stop playing
             switch_speaker(speakerButton, speakerOffButton)
-            intro.stop()
+
             speakerButton.mute = True
     elif button in speakerButtons:
         num = speakerButtons.index(button)
-        if button.mute:
+        if button.mute: #stop playing
             switch_speaker(button, button)
+            
             button.mute = False
-        else:
+        else: #start playing
             switch_speaker(button, speakerButtons[num+1])
+            
             button.mute = True
     elif button in gameButtons:
         move_button(button)
@@ -153,5 +158,5 @@ instrument3 = pygame.mixer.Sound(file="res/Instrument-3.wav")
 
 pygame.display.flip()
 
-play_intro()
+#play_intro()
 event_loop()
