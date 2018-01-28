@@ -203,12 +203,13 @@ def event_loop():
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
-screen.fill( (0,0,0) ) #black
 
 posX = [width*0.25+25, width*0.5+10, width*0.75-5]
 posY = [height*0.3+20, height*0.5+20, height*0.7+20]
 
 cwd = os.path.abspath('res/')
+background = pygame.image.load(cwd + "/Background.png")
+screen.blit(background, background.get_rect())
 emptyButton = Button(cwd + "/Empty_Button.png")
 powerButton = Button(cwd + "/Power_Button.png", (width-32,32))
 speakerOffButton = Button(cwd + "/SpeakerOff_Button.png", (32,32))
