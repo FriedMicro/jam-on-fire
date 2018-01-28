@@ -191,21 +191,22 @@ screen.fill( (0,0,0) ) #black
 posX = [width*0.25+25, width*0.5+10, width*0.75-5]
 posY = [height*0.3+20, height*0.5+20, height*0.7+20]
 
-emptyButton = Button("res/Empty_Button.png")
-powerButton = Button("res/Power_Button.png", (width-32,32))
-speakerOffButton = Button("res/SpeakerOff_Button.png", (32,32))
-speakerButton = Button("res/Speaker_Button.png", (32,32))
-smallSpeakerOffButton1 = Button("res/PurpleOff_Speaker.png")
-smallSpeakerOffButton2 = Button("res/PinkOff_Speaker.png")
-smallSpeakerOffButton3 = Button("res/CyanOff_Speaker.png")
-smallSpeakerButton1 = Button("res/Purple_Speaker.png", (width*0.25-25,posY[0]))
-smallSpeakerButton2 = Button("res/Pink_Speaker.png", (width*0.25-25,posY[1]))
-smallSpeakerButton3 = Button("res/Cyan_Speaker.png", (width*0.25-25,posY[2]))
-finalSpeakerButton = Button("res/Speaker_Button.png", (width*0.75+40,posY[1]))
-finalSpeakerOffButton = Button("res/SpeakerOff_Button.png", (width*0.75+40,posY[1]))
-purpleButton = Button("res/Purple_Button.png", None, 0)
-pinkButton = Button("res/Pink_Button.png", None, 1)
-cyanButton = Button("res/Cyan_Button.png", None, 2)
+cwd = os.getcwd() + "\\res"
+emptyButton = Button(cwd + "\Empty_Button.png")
+powerButton = Button(cwd + "\Power_Button.png", (width-32,32))
+speakerOffButton = Button(cwd + "\SpeakerOff_Button.png", (32,32))
+speakerButton = Button(cwd + "\Speaker_Button.png", (32,32))
+smallSpeakerOffButton1 = Button(cwd + "\PurpleOff_Speaker.png")
+smallSpeakerOffButton2 = Button(cwd + "\PinkOff_Speaker.png")
+smallSpeakerOffButton3 = Button(cwd + "\CyanOff_Speaker.png")
+smallSpeakerButton1 = Button(cwd + "\Purple_Speaker.png", (width*0.25-25,posY[0]))
+smallSpeakerButton2 = Button(cwd + "\Pink_Speaker.png", (width*0.25-25,posY[1]))
+smallSpeakerButton3 = Button(cwd + "\Cyan_Speaker.png", (width*0.25-25,posY[2]))
+finalSpeakerButton = Button(cwd + "\Speaker_Button.png", (width*0.75+40,posY[1]))
+finalSpeakerOffButton = Button(cwd + "\SpeakerOff_Button.png", (width*0.75+40,posY[1]))
+purpleButton = Button(cwd + "\Purple_Button.png", None, 0)
+pinkButton = Button(cwd + "\Pink_Button.png", None, 1)
+cyanButton = Button(cwd + "\Cyan_Button.png", None, 2)
 
 gameButtons = [purpleButton, pinkButton, cyanButton]
 utilityButtons = [powerButton, speakerButton, speakerOffButton, finalSpeakerButton, finalSpeakerOffButton]
@@ -216,16 +217,16 @@ speakerButtons = [smallSpeakerButton1, smallSpeakerOffButton1,
 buttons = gameButtons + utilityButtons + speakerButtons
 render_buttons()
 
-intro = pygame.mixer.Sound(file="res/Intro.wav")
-vocal1 = pygame.mixer.Sound(file="res/Alex-Vocal-1.wav")
-vocal2 = pygame.mixer.Sound(file="res/Alex-Vocal-2.wav")
-vocal3 = pygame.mixer.Sound(file="res/Alex-Vocal-3.wav")
-beat1 = pygame.mixer.Sound(file="res/Beat-loop-1.ogg")
-beat2 = pygame.mixer.Sound(file="res/Beat-loop-2.wav")
-beat3 = pygame.mixer.Sound(file="res/Beat-loop-3.wav")
-instrument1 = pygame.mixer.Sound(file="res/Instrument-1.ogg")
-instrument2 = pygame.mixer.Sound(file="res/Instrument-2.wav")
-instrument3 = pygame.mixer.Sound(file="res/Instrument-3.wav")
+intro = pygame.mixer.Sound(file=cwd + "\Intro.wav")
+vocal1 = pygame.mixer.Sound(file=cwd + "\Alex-Vocal-1.wav")
+vocal2 = pygame.mixer.Sound(file=cwd + "\Alex-Vocal-2.wav")
+vocal3 = pygame.mixer.Sound(file=cwd + "\Alex-Vocal-3.wav")
+beat1 = pygame.mixer.Sound(file=cwd + "\Beat-loop-1.ogg")
+beat2 = pygame.mixer.Sound(file=cwd + "\Beat-loop-2.wav")
+beat3 = pygame.mixer.Sound(file=cwd + "\Beat-loop-3.wav")
+instrument1 = pygame.mixer.Sound(file=cwd + "\Instrument-1.ogg")
+instrument2 = pygame.mixer.Sound(file=cwd + "\Instrument-2.wav")
+instrument3 = pygame.mixer.Sound(file=cwd + "\Instrument-3.wav")
 
 vocals = [vocal1, vocal2, vocal3]
 beats = [beat1, beat2, beat3]
