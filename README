@@ -1,1 +1,3 @@
-*Something witty*
+This application is written using the pygame library which can be installed through pip.
+
+To run it on Windows double-click the exe file provided. For mac user cd into the directory and type ./game.
