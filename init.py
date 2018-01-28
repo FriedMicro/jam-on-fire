@@ -52,6 +52,7 @@ def render_buttons():
     render_empty_buttons()
     screen.blit(powerButton.image, powerButton.rect)
     screen.blit(speakerButton.image, speakerButton.rect)
+    screen.blit(finalSpeakerButton.image, finalSpeakerButton.rect)
     screen.blit(smallSpeakerButton1.image, smallSpeakerButton1.rect)
     screen.blit(smallSpeakerButton2.image, smallSpeakerButton2.rect)
     screen.blit(smallSpeakerButton3.image, smallSpeakerButton3.rect)
@@ -73,11 +74,62 @@ def switch_speaker(current, change):
 
 def play_original():
     vocal1.play()
+    beat1.play()
+    instrument1.play()
 
 def stop_original():
     vocal1.stop()
     beat1.stop()
-    instrument.stop()
+    instrument1.stop()
+
+def play_combined(pos1, pos2, pos3):
+    vocals[pos1].play()
+    beats[pos2].play()
+    instruments[pos3].play()
+
+def stop_combined(pos1, pos2, pos3):
+    vocals[pos1].stop()
+    beats[pos2].stop()
+    instruments[pos3].stop()
+
+def play_piece(index, pos):
+    if index == 0:
+        vocals[pos].play()
+    elif index == 2:
+        beats[pos].play()
+    elif index == 4:
+        instruments[pos].play()
+
+def stop_piece(index, pos):
+    if index == 0:
+        vocals[pos].stop()
+    elif index == 2:
+        beats[pos].stop()
+    elif index == 4:
+        instruments[pos].stop()
+
+def get_button_pos(index):
+    if index == 0:
+        if purpleButton.rect.collidepoint( (posX[0], posY[0]) ):
+            return 0
+        elif purpleButton.rect.collidepoint( (posX[1], posY[0]) ):
+            return 1
+        elif purpleButton.rect.collidepoint( (posX[2], posY[0]) ):
+            return 2                         
+    elif index == 2:
+        if pinkButton.rect.collidepoint( (posX[0], posY[1]) ):
+            return 0
+        elif pinkButton.rect.collidepoint( (posX[1], posY[1]) ):
+            return 1
+        elif pinkButton.rect.collidepoint( (posX[2], posY[1]) ):
+            return 2
+    elif index == 4:
+        if cyanButton.rect.collidepoint( (posX[0], posY[2]) ):
+            return 0
+        elif cyanButton.rect.collidepoint( (posX[1], posY[2]) ):
+            return 1
+        elif cyanButton.rect.collidepoint( (posX[2], posY[2]) ):
+            return 2
 
 def button_event(button):
     if button == powerButton:
@@ -85,23 +137,36 @@ def button_event(button):
         pygame.display.quit()
         sys.exit()
     elif button == speakerButton:
-        if speakerButton.mute: #stop playing
-            switch_speaker(speakerOffButton, speakerButton)
-
-            speakerButton.mute = False
-        else: #start playing
-            switch_speaker(speakerButton, speakerOffButton)
-            play_original()
-            speakerButton.mute = True
-    elif button in speakerButtons:
-        num = speakerButtons.index(button)
         if button.mute: #stop playing
-            switch_speaker(button, button)
-            
+            switch_speaker(speakerOffButton, button)
+            stop_original()
             button.mute = False
         else: #start playing
-            switch_speaker(button, speakerButtons[num+1])
-            
+            switch_speaker(button, speakerOffButton)
+            play_original()
+            button.mute = True
+    elif button == finalSpeakerButton:
+        button1 = get_button_pos(0)
+        button2 = get_button_pos(2)
+        button3 = get_button_pos(4)
+        if button.mute: #stop playing
+            switch_speaker(finalSpeakerOffButton, button)
+            stop_combined(button1, button2, button3)
+            button.mute = False
+        else: #start playing
+            switch_speaker(button, finalSpeakerOffButton)
+            play_combined(button1, button2, button3)
+            button.mute = True
+    elif button in speakerButtons:
+        index = speakerButtons.index(button)
+        pos = get_button_pos(index)
+        if button.mute: #stop playing
+            switch_speaker(button, button)
+            stop_piece(index, pos)
+            button.mute = False
+        else: #start playing
+            switch_speaker(button, speakerButtons[index+1])
+            play_piece(index, pos)
             button.mute = True
     elif button in gameButtons:
         move_button(button)
@@ -136,12 +201,14 @@ smallSpeakerOffButton3 = Button("res/SmallSpeakerOff_Button.png")
 smallSpeakerButton1 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[0]))
 smallSpeakerButton2 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[1]))
 smallSpeakerButton3 = Button("res/SmallSpeaker_Button.png", (width*0.25-25,posY[2]))
+finalSpeakerButton = Button("res/Speaker_Button.png", (width*0.75+40,posY[1]))
+finalSpeakerOffButton = Button("res/SpeakerOff_Button.png", (width*0.75+40,posY[1]))
 purpleButton = Button("res/Purple_Button.png", None, 0)
 pinkButton = Button("res/Pink_Button.png", None, 1)
 cyanButton = Button("res/Cyan_Button.png", None, 2)
 
 gameButtons = [purpleButton, pinkButton, cyanButton]
-utilityButtons = [powerButton, speakerButton, speakerOffButton]
+utilityButtons = [powerButton, speakerButton, speakerOffButton, finalSpeakerButton, finalSpeakerOffButton]
 speakerButtons = [smallSpeakerButton1, smallSpeakerOffButton1,
                   smallSpeakerButton2, smallSpeakerOffButton2,
                   smallSpeakerButton3, smallSpeakerOffButton3]
@@ -155,10 +222,14 @@ vocal2 = pygame.mixer.Sound(file="res/Alex-Vocal-2.wav")
 vocal3 = pygame.mixer.Sound(file="res/Alex-Vocal-3.wav")
 beat1 = pygame.mixer.Sound(file="res/Beat-loop-1.ogg")
 beat2 = pygame.mixer.Sound(file="res/Beat-loop-2.wav")
-beat2 = pygame.mixer.Sound(file="res/Beat-loop-3.wav")
+beat3 = pygame.mixer.Sound(file="res/Beat-loop-3.wav")
 instrument1 = pygame.mixer.Sound(file="res/Instrument-1.ogg")
 instrument2 = pygame.mixer.Sound(file="res/Instrument-2.wav")
 instrument3 = pygame.mixer.Sound(file="res/Instrument-3.wav")
+
+vocals = [vocal1, vocal2, vocal3]
+beats = [beat1, beat2, beat3]
+instruments = [instrument1, instrument2, instrument3]
 
 
 pygame.display.flip()
